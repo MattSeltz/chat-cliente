@@ -1,7 +1,5 @@
+import { Router } from "./routes/router";
+
 export const App = () => {
-  return (
-    <>
-      <h1>Chat</h1>
-    </>
-  );
+  return <Router />;
 };
