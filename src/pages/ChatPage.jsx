@@ -6,24 +6,12 @@ export const ChatPage = () => (
     <h3 className="text-center font-serif font-semibold mt-3">Pepito</h3>
     <div className="bg-blue-500 h-full rounded-t-3xl py-10 mt-3 flex flex-col items-center gap-10 max-w-lg mx-auto">
       <div className="flex flex-col items-center gap-10 overflow-auto ">
-        <MessageComponent dir={false} group={false}>
-          Pepito
-        </MessageComponent>
-        <MessageComponent dir={true} group={false}>
-          Pepito
-        </MessageComponent>
-        <MessageComponent dir={false} group={false}>
-          Pepito
-        </MessageComponent>
-        <MessageComponent dir={true} group={false}>
-          Pepito
-        </MessageComponent>
-        <MessageComponent dir={false} group={false}>
-          Pepito
-        </MessageComponent>
-        <MessageComponent dir={true} group={false}>
-          Pepito
-        </MessageComponent>
+        <MessageComponent dir={false}>Pepito</MessageComponent>
+        <MessageComponent dir={true}>Pepito</MessageComponent>
+        <MessageComponent dir={false}>Pepito</MessageComponent>
+        <MessageComponent dir={true}>Pepito</MessageComponent>
+        <MessageComponent dir={false}>Pepito</MessageComponent>
+        <MessageComponent dir={true}>Pepito</MessageComponent>
       </div>
       <SendMessageComponent />
     </div>
