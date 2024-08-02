@@ -1,6 +1,6 @@
 import { Card } from "antd";
 
-export const MessageComponent = ({ dir, children, group }) => {
+export const MessageComponent = ({ dir, children, group, author }) => {
   return (
     <Card
       bordered={false}
@@ -14,13 +14,8 @@ export const MessageComponent = ({ dir, children, group }) => {
           <p className="text-xs">31/07/24</p>
           <p className="text-xs">19:52</p>
         </div>
-        {group && <p className="font-semibold text-xl">{children}</p>}
-        <p className="font-semibold text-xl">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-          corrupti libero labore sed et dolorem reiciendis mollitia iste,
-          voluptas voluptate ut soluta illo ad repellat officia, vel ipsa, autem
-          doloribus?
-        </p>
+        {group && <p className="font-semibold text-xl">{author}</p>}
+        <p className="font-semibold text-xl">{children}</p>
       </div>
     </Card>
   );
