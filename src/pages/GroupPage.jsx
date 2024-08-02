@@ -2,21 +2,28 @@ import { useEffect, useState } from "react";
 
 import { MessageComponent } from "../components/MessageComponent";
 import { SendMessageComponent } from "../components/SendMessageComponent";
-import { socket } from "../chat/chat";
+import { useSocket } from "../chat/chat";
+import { ENVIRONMENT } from "../config/config";
 
 export const GroupPage = () => {
+  const socket = useSocket(ENVIRONMENT);
+
   const [mensaje, setMensaje] = useState("");
   const [listaDeMensajes, setListaDeMensajes] = useState([]);
 
   useEffect(() => {
-    socket.on("connect", () => console.log("Conectado"));
-    socket.on("message", (msg) => setListaDeMensajes((prev) => [...prev, msg]));
+    if (socket) {
+      socket.on("connect", () => console.log("Conectado"));
+      socket.on("message", (msg) =>
+        setListaDeMensajes((prev) => [...prev, msg])
+      );
 
-    return () => {
-      socket.off("connect");
-      socket.off("message");
-    };
-  }, []);
+      return () => {
+        socket.off("connect");
+        socket.off("message");
+      };
+    }
+  }, [socket]);
 
   const send = async () => {
     if (mensaje) {
