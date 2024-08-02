@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  scrollbar-width: thin; /* "auto" or "thin" */
-  scrollbar-color: blue black; /* scroll thumb and track */
+  scrollbar-color: rgb(59 130 246) rgb(59 130 246);
+  scrollbar-width: thin;
 }
