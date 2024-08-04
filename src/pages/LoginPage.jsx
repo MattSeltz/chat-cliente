@@ -1,16 +1,39 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { ButtonComponent } from "../components/ButtonComponent";
 import { CardComponent } from "../components/CardComponent";
 import { InputComponent } from "../components/InputComponent";
+import { postData } from "../services/services";
+import { setUserGlobal } from "../contexts/users/users.contexts";
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const reset = () => {
+    setEmail("");
+    setPassword("");
+  };
 
   const login = async () => {
     if (email && password) {
       console.log("Iniciando Sesión...");
+
+      const res = await postData("/auth/login", { email, password });
+
+      if (res) {
+        reset();
+        sessionStorage.setItem("User", JSON.stringify(res._id));
+        dispatch(setUserGlobal(res._id));
+        navigate("/");
+      } else {
+        alert("Ha ocurrido un error, vuelve a intentarlo...");
+      }
     } else {
       alert("Datos incompletos...");
     }

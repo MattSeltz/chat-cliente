@@ -1,17 +1,36 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { ButtonComponent } from "../components/ButtonComponent";
 import { CardComponent } from "../components/CardComponent";
 import { InputComponent } from "../components/InputComponent";
+import { postData } from "../services/services";
 
 export const RegisterPage = () => {
+  const navigate = useNavigate();
+
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const reset = () => {
+    setNombre("");
+    setEmail("");
+    setPassword("");
+  };
+
   const register = async () => {
-    if (nombre && email && Password) {
+    if (nombre && email && password) {
       console.log("Creando Usuario...");
+
+      const res = await postData("/auth/register", { nombre, email, password });
+
+      if (res) {
+        reset();
+        navigate("/");
+      } else {
+        alert("Ha ocurrido un error, vuelve a intentarlo...");
+      }
     } else {
       alert("Datos incompletos...");
     }

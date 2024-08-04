@@ -34,7 +34,7 @@ export const ChatPage = () => {
   const send = async () => {
     if (mensaje) {
       console.log("Enviando...");
-      socket.emit("message", { mensaje });
+      socket.emit("message", { mensaje, id: "123" });
       setMensaje("");
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     } else {
