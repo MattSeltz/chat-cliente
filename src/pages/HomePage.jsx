@@ -1,9 +1,24 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 import { ButtonComponent } from "../components/ButtonComponent";
 import { CardComponent } from "../components/CardComponent";
+import { getOneData } from "../services/services";
 
 export const HomePage = () => {
+  const userGlobal = useSelector((state) => state.users.value);
+
+  const [usersList, setUsersList] = useState([]);
+
+  useEffect(() => {
+    getOneData("/usuarios/", userGlobal)
+      .then((res) =>
+        setUsersList((prev) => prev.concat(res.chats).concat(res.grupos))
+      )
+      .catch((e) => console.error(e.message));
+  }, []);
+
   return (
     <div className="h-screen overflow-hidden pb-10">
       <h3 className="text-center font-serif font-semibold mt-3">
@@ -14,24 +29,13 @@ export const HomePage = () => {
         <ButtonComponent>Nuevo Grupo</ButtonComponent>
 
         <div className="flex flex-col items-center gap-10 overflow-auto ">
-          <Link to={`/chat/${1}`}>
-            <CardComponent dir={false}>Pepito</CardComponent>
-          </Link>
-          <Link to={`/chat/${1}`}>
-            <CardComponent dir={true}>Pepito</CardComponent>
-          </Link>
-          <Link to={`/chat/${1}`}>
-            <CardComponent dir={false}>Pepito</CardComponent>
-          </Link>
-          <Link to={`/chat/${1}`}>
-            <CardComponent dir={true}>Pepito</CardComponent>
-          </Link>
-          <Link to={`/chat/${1}`}>
-            <CardComponent dir={false}>Pepito</CardComponent>
-          </Link>
-          <Link to={`/chat/${1}`}>
-            <CardComponent dir={true}>Pepito</CardComponent>
-          </Link>
+          {usersList.map((item, index) => (
+            <Link to={`/chat/${item._id}`}>
+              <CardComponent key={item._id} dir={index % 2 === 0 && true}>
+                {item.nombre}
+              </CardComponent>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

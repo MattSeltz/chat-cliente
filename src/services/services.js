@@ -4,11 +4,11 @@ export const getData = async (uri) => {
   try {
     const res = await fetch(`${ENVIRONMENT}${uri}`, {
       method: "GET",
+      credentials: "include",
     });
 
-    const data = await res.json();
-
     if (res.ok) {
+      const data = await res.json();
       return data;
     } else {
       return false;
@@ -23,11 +23,11 @@ export const getOneData = async (uri, id) => {
   try {
     const res = await fetch(`${ENVIRONMENT}${uri}${id}`, {
       method: "GET",
+      credentials: "include",
     });
 
-    const data = await res.json();
-
     if (res.ok) {
+      const data = await res.json();
       return data;
     } else {
       return false;
@@ -46,11 +46,11 @@ export const postData = async (uri, body) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     });
 
-    const data = await res.json();
-
     if (res.ok) {
+      const data = await res.json();
       return data;
     } else {
       return false;
@@ -69,11 +69,11 @@ export const putData = async (uri, id, body) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     });
 
-    const data = await res.json();
-
     if (res.ok) {
+      const data = await res.json();
       return data;
     } else {
       return false;
@@ -88,11 +88,11 @@ export const deleteData = async (uri, id) => {
   try {
     const res = await fetch(`${ENVIRONMENT}${uri}${id}`, {
       method: "DELETE",
+      credentials: "include",
     });
 
-    const data = await res.json();
-
     if (res.ok) {
+      const data = await res.json();
       return data;
     } else {
       return false;
