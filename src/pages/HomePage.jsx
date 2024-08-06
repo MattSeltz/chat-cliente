@@ -10,15 +10,17 @@ import { ModalComponent } from "../components/ModalComponent";
 export const HomePage = () => {
   const userGlobal = useSelector((state) => state.users.value);
 
+  const [user, setUser] = useState(null);
   const [usersList, setUsersList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isChat, setIsChat] = useState(true);
 
   useEffect(() => {
     getOneData("/usuarios/", userGlobal)
-      .then((res) =>
-        setUsersList((prev) => prev.concat(res.chats).concat(res.grupos))
-      )
+      .then((res) => {
+        setUser(res);
+        setUsersList((prev) => prev.concat(res.chats).concat(res.grupos));
+      })
       .catch((e) => console.error(e.message));
   }, []);
 
@@ -30,7 +32,7 @@ export const HomePage = () => {
   return (
     <div className="h-screen overflow-hidden pb-10">
       <h3 className="text-center font-serif font-semibold mt-3">
-        Matías Seltzer
+        {user?.nombre}
       </h3>
       <div className="bg-blue-500 h-full rounded-t-3xl py-10 mt-3 flex flex-col items-center gap-10 max-w-lg mx-auto">
         <ButtonComponent evt={() => showModal("Chat")}>

@@ -18,7 +18,10 @@ export const ModalComponent = ({ isModalOpen, setIsModalOpen, isChat }) => {
 
   useEffect(() => {
     getData("/usuarios")
-      .then((res) => setListaDeUsuarios((prev) => prev.concat(res)))
+      .then((res) => {
+        const filtered = res.filter((item) => item._id !== userGlobal);
+        setListaDeUsuarios((prev) => prev.concat(filtered));
+      })
       .catch((e) => console.error(e));
   }, []);
 
@@ -31,9 +34,10 @@ export const ModalComponent = ({ isModalOpen, setIsModalOpen, isChat }) => {
   const handleOk = async () => {
     if (usuarioSeleccionado) {
       const res = await postData("/chats", {
-        usuarios: usuarioSeleccionado,
+        usuarios: [usuarioSeleccionado, userGlobal],
       });
 
+      await putData("/usuarios/", usuarioSeleccionado, { chats: res });
       await putData("/usuarios/", userGlobal, { chats: res });
 
       handleCancel();

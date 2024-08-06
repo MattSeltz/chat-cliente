@@ -1,12 +1,16 @@
 import { useEffect, useState, useRef } from "react";
+import { useSelector } from "react-redux";
 
 import { MessageComponent } from "../components/MessageComponent";
 import { SendMessageComponent } from "../components/SendMessageComponent";
 import { useSocket } from "../chat/chat";
 import { ENVIRONMENT } from "../config/config";
+import { getOneData } from "../services/services";
 
 export const ChatPage = () => {
-  const socket = useSocket(ENVIRONMENT);
+  const userGlobal = useSelector((state) => state.users.value);
+
+  const socket = useSocket(ENVIRONMENT, userGlobal);
 
   const messagesEndRef = useRef(null);
 
@@ -31,10 +35,16 @@ export const ChatPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [listaDeMensajes]);
 
+  useEffect(() => {
+    getOneData("/chats/", location.pathname.split("/")[2])
+      .then((res) => console.log(res))
+      .catch((e) => console.error(e));
+  }, []);
+
   const send = async () => {
     if (mensaje) {
       console.log("Enviando...");
-      socket.emit("message", { mensaje, id: "123" });
+      socket.emit("message", mensaje);
       setMensaje("");
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     } else {
@@ -53,11 +63,11 @@ export const ChatPage = () => {
           {listaDeMensajes.map((item, index) => (
             <MessageComponent
               id={item.id}
-              socket={socket.id}
+              socket={userGlobal}
               key={index}
-              dir={item.id === socket.id}
+              dir={item.id._id === userGlobal}
             >
-              {item.msg.mensaje}
+              {item.msg}
             </MessageComponent>
           ))}
           <div ref={messagesEndRef} />

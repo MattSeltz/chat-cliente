@@ -3,14 +3,14 @@ import { Card, Badge } from "antd";
 export const MessageComponent = ({ dir, children, id, socket }) => {
   return (
     <Badge.Ribbon
-      placement={id === socket ? "end" : "start"}
-      text={id.slice(0, 5)}
+      placement={id._id === socket ? "start" : "end"}
+      text={id.nombre}
     >
       <Card
         bordered={false}
         style={{
           width: 300,
-          borderRadius: dir ? "25px 0 0 25px" : " 0 25px 25px 0",
+          borderRadius: dir ? " 0 25px 25px 0" : "25px 0 0 25px",
         }}
       >
         <div className="border-b-2 my-3"></div>
