@@ -10,12 +10,17 @@ import { getOneData } from "../services/services";
 export const ChatPage = () => {
   const userGlobal = useSelector((state) => state.users.value);
 
-  const socket = useSocket(ENVIRONMENT, userGlobal);
+  const socket = useSocket(
+    ENVIRONMENT,
+    userGlobal,
+    location.pathname.split("/")[2]
+  );
 
   const messagesEndRef = useRef(null);
 
   const [mensaje, setMensaje] = useState("");
   const [listaDeMensajes, setListaDeMensajes] = useState([]);
+  const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
     if (socket) {
@@ -37,7 +42,11 @@ export const ChatPage = () => {
 
   useEffect(() => {
     getOneData("/chats/", location.pathname.split("/")[2])
-      .then((res) => console.log(res))
+      .then((res) => {
+        const to = res.usuarios.filter((item) => item._id !== userGlobal);
+
+        setUsuario(to[0]);
+      })
       .catch((e) => console.error(e));
   }, []);
 
@@ -54,7 +63,9 @@ export const ChatPage = () => {
 
   return (
     <div className="h-screen  pb-10">
-      <h3 className="text-center font-serif font-semibold mt-3">Pepito</h3>
+      <h3 className="text-center font-serif font-semibold mt-3">
+        {usuario?.nombre}
+      </h3>
       <div className="bg-blue-500 h-full rounded-t-3xl py-10 mt-3 flex flex-col justify-between items-center gap-10 max-w-lg mx-auto">
         <div
           className="flex flex-col items-center gap-10 overflow-auto "

@@ -1,13 +1,14 @@
 import io from "socket.io-client";
 import { useEffect, useState } from "react";
 
-export const useSocket = (url, token) => {
+export const useSocket = (url, user, chat) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
     const socketInstance = io(url, {
       auth: {
-        token,
+        user,
+        chat,
       },
     });
     setSocket(socketInstance);

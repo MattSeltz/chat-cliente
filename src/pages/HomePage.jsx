@@ -52,7 +52,10 @@ export const HomePage = () => {
           {usersList.map((item, index) => (
             <Link to={`/chat/${item._id}`}>
               <CardComponent key={item._id} dir={index % 2 === 0 && true}>
-                {item.nombre}
+                {item.nombre
+                  ? item.nombre
+                  : item.usuarios.filter((item) => item._id !== userGlobal)[0]
+                      .nombre}
               </CardComponent>
             </Link>
           ))}
