@@ -13,15 +13,21 @@ export const HomePage = () => {
   const [user, setUser] = useState(null);
   const [usersList, setUsersList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isChat, setIsChat] = useState(true);
 
   useEffect(() => {
     getOneData("/usuarios/", userGlobal)
       .then((res) => {
         setUser(res);
-        setUsersList((prev) => prev.concat(res.chats));
+        setUsersList((prev) => prev.concat(res.chats).concat(res.grupos));
       })
       .catch((e) => console.error(e.message));
   }, []);
+
+  const showModal = (modal) => {
+    modal === "Chat" ? setIsChat(true) : setIsChat(false);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="h-screen overflow-hidden pb-10">
@@ -29,23 +35,27 @@ export const HomePage = () => {
         {user?.nombre}
       </h3>
       <div className="bg-blue-500 h-full rounded-t-3xl py-10 mt-3 flex flex-col items-center gap-10 max-w-lg mx-auto">
-        <ButtonComponent evt={() => setIsModalOpen(true)}>
+        <ButtonComponent evt={() => showModal("Chat")}>
           Nuevo Chat
+        </ButtonComponent>
+        <ButtonComponent evt={() => showModal("Grupo")}>
+          Nuevo Grupo
         </ButtonComponent>
 
         <ModalComponent
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          isChat={isChat}
         />
 
         <div className="flex flex-col items-center gap-10 overflow-auto ">
           {usersList.map((item, index) => (
             <Link to={`/chat/${item._id}`}>
               <CardComponent key={item._id} dir={index % 2 === 0 && true}>
-                {
-                  item.usuarios.filter((item) => item._id !== userGlobal)[0]
-                    .nombre
-                }
+                {item.nombre
+                  ? item.nombre
+                  : item.usuarios.filter((item) => item._id !== userGlobal)[0]
+                      .nombre}
               </CardComponent>
             </Link>
           ))}
