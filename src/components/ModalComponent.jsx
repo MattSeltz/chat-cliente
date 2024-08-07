@@ -1,19 +1,17 @@
-import { Modal, Divider, List } from "antd";
+import { Modal, List } from "antd";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { getData, postData, putData } from "../services/services";
-import { InputComponent } from "./InputComponent";
 
-export const ModalComponent = ({ isModalOpen, setIsModalOpen, isChat }) => {
+export const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
   const userGlobal = useSelector((state) => state.users.value);
 
   const navigate = useNavigate();
 
   const [listaDeUsuarios, setListaDeUsuarios] = useState([]);
-  const [nombre, setNombre] = useState("");
   const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
 
   useEffect(() => {
@@ -27,7 +25,6 @@ export const ModalComponent = ({ isModalOpen, setIsModalOpen, isChat }) => {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    setNombre("");
     setUsuarioSeleccionado(null);
   };
 
@@ -40,8 +37,9 @@ export const ModalComponent = ({ isModalOpen, setIsModalOpen, isChat }) => {
       await putData("/usuarios/", usuarioSeleccionado, { chats: res });
       await putData("/usuarios/", userGlobal, { chats: res });
 
-      handleCancel();
       navigate(`/chat/${res._id}`);
+
+      handleCancel();
     } else {
       alert("Datos incompletos...");
     }
@@ -49,22 +47,13 @@ export const ModalComponent = ({ isModalOpen, setIsModalOpen, isChat }) => {
 
   return (
     <Modal
-      title={`Nuevo ${isChat ? "Chat" : "Grupo"}`}
+      title={"Nuevo Chat"}
       open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
       okText="Crear"
       cancelText="Cancelar"
     >
-      {!isChat && (
-        <>
-          <InputComponent type={"text"} value={nombre} evt={setNombre}>
-            Nombre del grupo
-          </InputComponent>
-          <Divider />
-        </>
-      )}
-
       <List
         header={<div>Seleciona un usuario</div>}
         bordered
